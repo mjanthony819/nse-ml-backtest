@@ -1,0 +1,50 @@
+{
+  "BHARTIARTL.NS_2016-01-01_2026-10-15.csv": {
+    "sha256": "862c51d6d73ec1a6981a96f7c2c97e59cd4279c92eea4cadda1ce1155679203f",
+    "bytes": 249451
+  },
+  "HDFCBANK.NS_2016-01-01_2026-10-15.csv": {
+    "sha256": "9c1a3c075778d68351f82b8e3156ef4b5f44c516922391f04f3f9ec5212fe2fa",
+    "bytes": 250005
+  },
+  "HINDUNILVR.NS_2016-01-01_2026-10-15.csv": {
+    "sha256": "62f41798c10561acf581cbd7316143d9bb176d047b25bfb0895a861382d4adf3",
+    "bytes": 245283
+  },
+  "ICICIBANK.NS_2016-01-01_2026-10-15.csv": {
+    "sha256": "d29d28d8a3bed4c7226141aac00075bc7a9ffa398e0cdfdacf7bf41d238b34fe",
+    "bytes": 251130
+  },
+  "INFY.NS_2016-01-01_2026-10-15.csv": {
+    "sha256": "0a227b8dc70843b5495d83c5ca99b79aa529323bd7d6867be199daf6a2ca1061",
+    "bytes": 248322
+  },
+  "ITC.NS_2016-01-01_2026-10-15.csv": {
+    "sha256": "d715d9ea6e3b28ceea3e2431eea35ec4645a1af666c1e4a8b5402b286dd1a2dd",
+    "bytes": 251461
+  },
+  "LT.NS_2016-01-01_2026-10-15.csv": {
+    "sha256": "9b53e446c909383602c4ab5c5ec68d80dd14fd0d44f41a7b6559226bcb66c83c",
+    "bytes": 245739
+  },
+  "NIFTYBEES.NS_2016-01-01_2026-10-15.csv": {
+    "sha256": "fb4d612e2f63ed3431fbb3d91014bf5773e5dcec6dcf45335805f143e6594209",
+    "bytes": 228069
+  },
+  "RELIANCE.NS_2016-01-01_2026-10-15.csv": {
+    "sha256": "eb006f3208bbe093090157cbb83cf27f229e1165c458ddfe31a62af45ae10fd5",
+    "bytes": 249982
+  },
+  "SBIN.NS_2016-01-01_2026-10-15.csv": {
+    "sha256": "3a3f6b9bc3f9ac4afd52cbebe4ccfb6c320731252af10537427d8edd48d4e76a",
+    "bytes": 250804
+  },
+  "TCS.NS_2016-01-01_2026-10-15.csv": {
+    "sha256": "0e29ccfdd65d58ac9f00ce903557abcfb50d1bde5ed2294d8623cd31f0f1de8d",
+    "bytes": 247976
+  },
+  "^NSEI_2016-01-01_2026-10-15.csv": {
+    "sha256": "32ccbdde8166a89a19e808f23f216433f6bad4b369eb6d0748084018b9f2a943",
+    "bytes": 200534
+  }
+}

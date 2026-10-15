@@ -1,0 +1,98 @@
+{
+  "method": "paired circular moving-block percentile bootstrap",
+  "draws": 5000,
+  "block_trading_days": 20,
+  "seed": 2026,
+  "sharpe_95_ci": {
+    "ML strategy": [
+      -1.2736962231528506,
+      0.8739594306782107
+    ],
+    "EW daily-rebalanced stocks": [
+      -1.014399514037987,
+      1.0074729667248556
+    ],
+    "Nifty BeES adjusted ETF proxy": [
+      -0.9308803131445771,
+      1.190822182188221
+    ],
+    "Nifty 50 price index (not TR)": [
+      -0.9400465296455924,
+      1.0070528727162786
+    ]
+  },
+  "strategy_minus_benchmark_sharpe_95_ci": {
+    "EW daily-rebalanced stocks": {
+      "estimate": -0.20756119843747436,
+      "ci": [
+        -0.5360592794946494,
+        0.08713655462156202
+      ]
+    },
+    "Nifty BeES adjusted ETF proxy": {
+      "estimate": -0.3202962047927884,
+      "ci": [
+        -0.8170281342006566,
+        0.10562416302559023
+      ]
+    },
+    "Nifty 50 price index (not TR)": {
+      "estimate": -0.23326679923485727,
+      "ci": [
+        -0.7251692214411283,
+        0.1957697136939421
+      ]
+    }
+  },
+  "accuracy": {
+    "correct": 4542,
+    "n": 9120,
+    "accuracy": 0.4980263157894737,
+    "test_up_rate": 0.49736842105263157,
+    "majority_class_accuracy": 0.5026315789473684,
+    "two_sided_binomial_p_vs_majority": 0.37910003245225077,
+    "two_sided_binomial_p_vs_up_rate": 0.9000090090736186,
+    "warning": "IID binomial diagnostic only: pooled tickers/days dependent; null rate estimated on test data. Not valid independent evidence of an edge."
+  },
+  "excluded_noncommon_dates": [
+    "2016-01-01",
+    "2016-08-12",
+    "2018-01-01",
+    "2019-01-01",
+    "2019-10-27",
+    "2020-11-14",
+    "2025-10-24",
+    "2026-01-15",
+    "2026-10-14"
+  ],
+  "folds": [
+    {
+      "train_start": "2016-03-15",
+      "train_last_signal": "2022-12-29",
+      "train_last_label": "2022-12-30",
+      "test_start": "2023-01-02",
+      "test_end": "2026-10-12",
+      "train_rows": 16740,
+      "test_rows": 9120
+    }
+  ],
+  "period": {
+    "first_signal": "2023-01-02",
+    "last_signal": "2026-10-12",
+    "last_label": "2026-10-13",
+    "days": 930,
+    "missing_feature_cash_slots": 180
+  },
+  "shuffled_label_null": {
+    "n": 200,
+    "observed_excess_sharpe": -0.1941253326899516,
+    "observed_zero_rf_sharpe": 0.3494027709154293,
+    "null_excess_95_range": [
+      -1.0873405892092014,
+      -0.10675232107803943
+    ],
+    "upper_tail_plus_one_p": 0.1890547263681592,
+    "observed_percentile": 81.5,
+    "published_minus_0_05_percentile_in_zero_rf_null": 12.5
+  }
+}

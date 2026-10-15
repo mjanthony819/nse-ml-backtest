@@ -1,0 +1,8 @@
+__pycache__/
+.pytest_cache/
+.venv/
+data/cache/
+*.pyc
+# Regenerated bulky audit/preview outputs
+results/**/predictions.csv
+results/**/*.png

@@ -1,0 +1,125 @@
+{
+  "method": "paired circular moving-block percentile bootstrap",
+  "draws": 5000,
+  "block_trading_days": 20,
+  "seed": 2026,
+  "sharpe_95_ci": {
+    "ML strategy": [
+      -1.5729271897767156,
+      0.4623467418029013
+    ],
+    "EW daily-rebalanced stocks": [
+      -1.3912559618578615,
+      0.64396851427072
+    ],
+    "Nifty BeES adjusted ETF proxy": [
+      -0.9308803131445771,
+      1.190822182188221
+    ],
+    "Nifty 50 price index (not TR)": [
+      -0.9400465296455924,
+      1.0070528727162786
+    ]
+  },
+  "strategy_minus_benchmark_sharpe_95_ci": {
+    "EW daily-rebalanced stocks": {
+      "estimate": -0.17494171631428546,
+      "ci": [
+        -0.4078693842539794,
+        0.022028078072435484
+      ]
+    },
+    "Nifty BeES adjusted ETF proxy": {
+      "estimate": -0.6650944112435748,
+      "ci": [
+        -1.2991166181652247,
+        -0.04876588576242585
+      ]
+    },
+    "Nifty 50 price index (not TR)": {
+      "estimate": -0.5780650056856437,
+      "ci": [
+        -1.179660158939114,
+        0.010288379804913709
+      ]
+    }
+  },
+  "accuracy": {
+    "correct": 2684,
+    "n": 5480,
+    "accuracy": 0.4897810218978102,
+    "test_up_rate": 0.4897810218978102,
+    "majority_class_accuracy": 0.5102189781021897,
+    "two_sided_binomial_p_vs_majority": 0.0025832716006058236,
+    "two_sided_binomial_p_vs_up_rate": 1.0,
+    "warning": "IID binomial diagnostic only: pooled tickers/days dependent; null rate estimated on test data. Not valid independent evidence of an edge."
+  },
+  "excluded_noncommon_dates": [
+    "2016-01-01",
+    "2016-08-12",
+    "2018-01-01",
+    "2019-01-01",
+    "2019-10-27",
+    "2020-11-14",
+    "2025-10-24",
+    "2026-01-15",
+    "2026-10-14"
+  ],
+  "folds": [
+    {
+      "train_start": "2016-03-15",
+      "train_last_signal": "2022-12-29",
+      "train_last_label": "2022-12-30",
+      "test_start": "2023-01-02",
+      "test_end": "2023-12-29",
+      "train_rows": 10044,
+      "test_rows": 1470
+    },
+    {
+      "train_start": "2016-03-15",
+      "train_last_signal": "2023-12-28",
+      "train_last_label": "2023-12-29",
+      "test_start": "2024-01-01",
+      "test_end": "2024-12-31",
+      "train_rows": 11514,
+      "test_rows": 1476
+    },
+    {
+      "train_start": "2016-03-15",
+      "train_last_signal": "2024-12-30",
+      "train_last_label": "2024-12-31",
+      "test_start": "2025-01-01",
+      "test_end": "2025-12-31",
+      "train_rows": 12990,
+      "test_rows": 1388
+    },
+    {
+      "train_start": "2016-03-15",
+      "train_last_signal": "2025-12-30",
+      "train_last_label": "2025-12-31",
+      "test_start": "2026-01-01",
+      "test_end": "2026-10-12",
+      "train_rows": 14378,
+      "test_rows": 1146
+    }
+  ],
+  "period": {
+    "first_signal": "2023-01-02",
+    "last_signal": "2026-10-12",
+    "last_label": "2026-10-13",
+    "days": 930,
+    "missing_feature_cash_slots": 100
+  },
+  "shuffled_label_null": {
+    "n": 200,
+    "observed_excess_sharpe": -0.538923539140738,
+    "observed_zero_rf_sharpe": -0.03731078919874408,
+    "null_excess_95_range": [
+      -1.0663520946689684,
+      -0.3904317669980067
+    ],
+    "upper_tail_plus_one_p": 0.2935323383084577,
+    "observed_percentile": 71.0,
+    "published_minus_0_05_percentile_in_zero_rf_null": 66.0
+  }
+}
