@@ -42,3 +42,28 @@ def test_missing_feature_slot_stays_cash():
     assert strategy.iloc[1] == 0.05
     assert np.isclose(ew.iloc[1], 0.15)
     assert pos.loc[dates[1], "B"] == 0
+
+
+def test_bootstrap_same_seed_reproduces_report():
+    rng = np.random.default_rng(5)
+    df = pd.DataFrame({"s": rng.normal(0.001, 0.02, 300), "b": rng.normal(0.0005, 0.02, 300)})
+    assert m.bootstrap(df, draws=50) == m.bootstrap(df, draws=50)  # seeded: identical report
+
+
+def test_zero_volume_rows_are_dropped_from_features():
+    dates = pd.bdate_range("2020-01-01", periods=80)
+    close = pd.Series(np.linspace(100, 120, 80), index=dates)
+    vol = pd.Series([1000.0] * 80, index=dates)
+    vol.iloc[60] = 0  # suspended-style zero-volume day must not flow into volume features
+    df = pd.DataFrame({"Close": close, "Volume": vol}, index=dates)
+    out = m.features(df, "X")
+    assert dates[60] not in out.index
+    assert dates[59] in out.index
+
+
+def test_compact_svg_collapses_whitespace(tmp_path):
+    p = tmp_path / "x.svg"
+    p.write_text('<svg>\n   <rect   x="1"/>\n\n</svg>\n')
+    m.compact_svg(p)
+    txt = p.read_text()
+    assert "\n" not in txt.strip() and "  " not in txt and txt.endswith("\n")
