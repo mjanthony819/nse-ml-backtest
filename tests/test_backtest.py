@@ -2,6 +2,7 @@ import importlib.util
 from pathlib import Path
 import numpy as np
 import pandas as pd
+import pytest
 
 spec = importlib.util.spec_from_file_location("run", Path(__file__).parents[1] / "src" / "run.py")
 m = importlib.util.module_from_spec(spec)
@@ -67,3 +68,18 @@ def test_compact_svg_collapses_whitespace(tmp_path):
     m.compact_svg(p)
     txt = p.read_text()
     assert "\n" not in txt.strip() and "  " not in txt and txt.endswith("\n")
+
+
+def test_portfolio_refuses_missing_returns_instead_of_fabricating():
+    dates = pd.bdate_range("2023-01-02", periods=3)
+    pred = pd.DataFrame({"ticker": ["A"] * 3, "p": [1.0, 1.0, 1.0]}, index=dates)
+    ret = pd.DataFrame({"A": [0.1, np.nan, 0.1]}, index=dates)
+    with pytest.raises(ValueError):
+        m.portfolio(pred, 0, ret)
+
+
+def test_split_rows_rejects_window_with_empty_train():
+    dates = pd.bdate_range("2023-01-02", periods=5)
+    data = pd.DataFrame({"label_end": pd.Series(dates, index=dates).shift(-1)}, index=dates)
+    with pytest.raises(AssertionError):
+        m.split_rows(data, dates[0], dates[2])  # nothing before the first test window
