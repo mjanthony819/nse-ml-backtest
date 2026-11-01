@@ -117,7 +117,12 @@ def portfolio(pred, cost, stock_returns):
 
 
 def sharpe(ret, risk_free=RF_DAILY):
-    return float((np.mean(ret) - risk_free) / np.std(ret, ddof=1) * np.sqrt(252))
+    sd = np.std(ret, ddof=1)
+    # A constant series gives sd ~1e-19 from floating-point noise, not 0: treat
+    # anything below 1e-12 (real daily vol is orders of magnitude larger) as flat.
+    if not sd > 1e-12:
+        return 0.0
+    return float((np.mean(ret) - risk_free) / sd * np.sqrt(252))
 
 
 def metrics(ret):
