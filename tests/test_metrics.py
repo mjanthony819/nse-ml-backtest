@@ -49,3 +49,9 @@ def test_portfolio_charges_cost_on_entry_and_exit():
     assert strategy.iloc[0] == pytest.approx(0.1 - 0.001)  # day 1: long, pays to enter
     assert strategy.iloc[1] == pytest.approx(-0.001)       # day 2: flat, pays to exit
     assert turnover["A"].tolist() == [1.0, 1.0]
+
+
+def test_sharpe_zero_variance_returns_zero_not_inf():
+    assert m.sharpe(pd.Series([0.0] * 100)) == 0.0       # was -inf before the guard
+    assert m.sharpe(pd.Series([0.001] * 100)) == 0.0     # was ~5e16: a huge garbage Sharpe
+    assert m.metrics(pd.Series([0.0] * 100))["Ann. Sharpe (6.5% RF)"] == 0.0
