@@ -144,7 +144,11 @@ def bootstrap(returns, draws=5000, block=20, seed=2026):
         starts = rng.integers(0, n, size=(n + block - 1) // block)
         idx = ((starts[:, None] + np.arange(block)) % n).ravel()[:n]
         x = a[idx]
-        s = (x.mean(axis=0) - RF_DAILY) / x.std(axis=0, ddof=1) * np.sqrt(252)
+        # Same guard as sharpe(): a resample with a (near-)constant column has
+        # sd ~1e-19 from floating-point noise, which would blow that draw's
+        # Sharpe up to ~1e15 and poison the percentile CIs.
+        sd = x.std(axis=0, ddof=1)
+        s = np.where(sd > 1e-12, (x.mean(axis=0) - RF_DAILY) / np.where(sd > 1e-12, sd, 1.0) * np.sqrt(252), 0.0)
         samples.append(s)
     samples = np.asarray(samples)
     report = {"method": "paired circular moving-block percentile bootstrap", "draws": draws,
