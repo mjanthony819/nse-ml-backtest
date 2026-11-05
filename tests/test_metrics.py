@@ -55,3 +55,14 @@ def test_sharpe_zero_variance_returns_zero_not_inf():
     assert m.sharpe(pd.Series([0.0] * 100)) == 0.0       # was -inf before the guard
     assert m.sharpe(pd.Series([0.001] * 100)) == 0.0     # was ~5e16: a huge garbage Sharpe
     assert m.metrics(pd.Series([0.0] * 100))["Ann. Sharpe (6.5% RF)"] == 0.0
+
+
+def test_bootstrap_flat_column_gives_finite_zero_sharpe():
+    rng = np.random.default_rng(1)
+    df = pd.DataFrame({"strategy": rng.normal(0.0004, 0.01, 250), "flat": 0.0002})
+    rep = m.bootstrap(df, draws=50, block=20, seed=7)
+    # Before the zero-variance guard, the flat column's resample sd was ~1e-19,
+    # so every draw's Sharpe blew up to ~1e15 and the CIs came out astronomical.
+    assert rep["sharpe_95_ci"]["flat"] == [0.0, 0.0]
+    diff = rep["strategy_minus_benchmark_sharpe_95_ci"]["flat"]["ci"]
+    assert all(np.isfinite(diff))
