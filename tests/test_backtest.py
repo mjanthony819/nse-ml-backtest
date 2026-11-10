@@ -83,3 +83,18 @@ def test_split_rows_rejects_window_with_empty_train():
     data = pd.DataFrame({"label_end": pd.Series(dates, index=dates).shift(-1)}, index=dates)
     with pytest.raises(AssertionError):
         m.split_rows(data, dates[0], dates[2])  # nothing before the first test window
+
+
+def test_prices_caches_the_download_and_drops_nan_close(tmp_path, monkeypatch):
+    idx = pd.bdate_range("2024-01-01", periods=4)
+    cols = pd.MultiIndex.from_product([["Open", "High", "Low", "Close", "Volume"], ["X.NS"]])
+    raw = pd.DataFrame([[1, 1, 1, 100.0, 10], [1, 1, 1, np.nan, 10],
+                        [1, 1, 1, 102.0, 10], [1, 1, 1, 103.0, 10]], index=idx, columns=cols)
+    calls = []
+    monkeypatch.setattr(m, "ROOT", tmp_path)
+    monkeypatch.setattr(m.yf, "download", lambda *a, **k: (calls.append(1), raw)[1])
+    first = m.prices("X.NS", "2024-01-01", "2024-01-06")
+    second = m.prices("X.NS", "2024-01-01", "2024-01-06")  # must read the cache, not re-download
+    assert len(calls) == 1
+    assert first.equals(second)
+    assert len(first) == 3 and first["Close"].notna().all()
