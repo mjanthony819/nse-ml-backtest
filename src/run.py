@@ -83,6 +83,8 @@ def split_rows(data, start, stop):
 
 
 def predict(data, split, end, mode, rng=None):
+    if not pd.Timestamp(split) < pd.Timestamp(end):
+        raise ValueError(f"--split ({split}) must be before --end ({end})")
     boundaries = [pd.Timestamp(split)]
     if mode == "walk_forward":
         boundaries += list(pd.date_range(f"{pd.Timestamp(split).year + 1}-01-01", end, freq="YS"))
