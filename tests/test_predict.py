@@ -4,6 +4,7 @@ import importlib.util
 from pathlib import Path
 import numpy as np
 import pandas as pd
+import pytest
 
 spec = importlib.util.spec_from_file_location("run", Path(__file__).parents[1] / "src" / "run.py")
 m = importlib.util.module_from_spec(spec)
@@ -51,3 +52,10 @@ def test_shuffled_label_fits_are_seed_reproducible():
     a, _ = m.predict(data, "2023-01-01", "2023-06-30", "static", np.random.default_rng(42))
     b, _ = m.predict(data, "2023-01-01", "2023-06-30", "static", np.random.default_rng(42))
     assert a["p"].equals(b["p"])  # the null distribution depends on this being repeatable
+
+def test_split_after_end_is_rejected_with_a_clear_error():
+    # transposed --split/--end dates used to die on a bare AssertionError inside split_rows
+    with pytest.raises(ValueError, match="must be before"):
+        m.predict(dataset(), "2023-01-01", "2022-06-30", "static")
+    with pytest.raises(ValueError, match="must be before"):
+        m.predict(dataset(), "2023-01-01", "2022-06-30", "walk_forward")
