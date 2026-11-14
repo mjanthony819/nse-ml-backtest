@@ -35,6 +35,17 @@ def test_risk_free_conversion_and_paired_bootstrap():
     assert report["strategy_minus_benchmark_sharpe_95_ci"]["same"]["ci"] == [0.0, 0.0]
 
 
+def test_bootstrap_difference_is_strategy_minus_benchmark_in_that_order():
+    rng = np.random.default_rng(11)
+    df = pd.DataFrame({"strategy": rng.normal(0.002, 0.01, 250), "bench": rng.normal(-0.001, 0.01, 250)})
+    rep = m.bootstrap(df, draws=50, block=20, seed=3)
+    entry = rep["strategy_minus_benchmark_sharpe_95_ci"]["bench"]
+    # The published claim is strategy minus benchmark: a sign flip would invert the
+    # conclusion, and the identical-column test above cannot catch one (0 either way).
+    assert np.isclose(entry["estimate"], m.sharpe(df["strategy"]) - m.sharpe(df["bench"]))
+    assert entry["estimate"] > 0
+
+
 def test_missing_feature_slot_stays_cash():
     dates = pd.bdate_range("2023-01-02", periods=2)
     pred = pd.DataFrame({"ticker": ["A", "A", "B"], "p": [1.0, 1.0, 1.0]}, index=[dates[0], dates[1], dates[0]])
