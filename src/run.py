@@ -87,7 +87,10 @@ def predict(data, split, end, mode, rng=None):
         raise ValueError(f"--split ({split}) must be before --end ({end})")
     boundaries = [pd.Timestamp(split)]
     if mode == "walk_forward":
-        boundaries += list(pd.date_range(f"{pd.Timestamp(split).year + 1}-01-01", end, freq="YS"))
+        # Skip a generated boundary equal to --end: it would duplicate the final
+        # boundary and produce an empty test segment that dies on a bare assert.
+        boundaries += [b for b in pd.date_range(f"{pd.Timestamp(split).year + 1}-01-01", end, freq="YS")
+                       if b < pd.Timestamp(end)]
     boundaries += [pd.Timestamp(end)]
     pieces, folds = [], []
     for start, stop in zip(boundaries[:-1], boundaries[1:]):
