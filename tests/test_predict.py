@@ -59,3 +59,14 @@ def test_split_after_end_is_rejected_with_a_clear_error():
         m.predict(dataset(), "2023-01-01", "2022-06-30", "static")
     with pytest.raises(ValueError, match="must be before"):
         m.predict(dataset(), "2023-01-01", "2022-06-30", "walk_forward")
+
+
+def test_walk_forward_end_on_a_year_start_skips_the_empty_fold():
+    # --end exactly on a Jan 1 boundary used to duplicate it and die on a bare AssertionError
+    pred, folds = m.predict(dataset(), "2023-01-01", "2025-01-01", "walk_forward")
+    assert len(folds) == 2
+    assert all(f["test_rows"] > 0 for f in folds)
+    assert not pred.index.duplicated().any()
+    assert pred.index.min() >= pd.Timestamp("2023-01-01")
+    assert pred.index.max() < pd.Timestamp("2025-01-01")
+    assert sum(f["test_rows"] for f in folds) == len(pred)
