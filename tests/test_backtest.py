@@ -92,7 +92,7 @@ def test_portfolio_refuses_missing_returns_instead_of_fabricating():
 def test_split_rows_rejects_window_with_empty_train():
     dates = pd.bdate_range("2023-01-02", periods=5)
     data = pd.DataFrame({"label_end": pd.Series(dates, index=dates).shift(-1)}, index=dates)
-    with pytest.raises(AssertionError):
+    with pytest.raises(ValueError, match="No training rows"):
         m.split_rows(data, dates[0], dates[2])  # nothing before the first test window
 
 
@@ -109,3 +109,10 @@ def test_prices_caches_the_download_and_drops_nan_close(tmp_path, monkeypatch):
     assert len(calls) == 1
     assert first.equals(second)
     assert len(first) == 3 and first["Close"].notna().all()
+
+
+def test_split_rows_rejects_window_with_empty_test():
+    dates = pd.bdate_range("2023-01-02", periods=5)
+    data = pd.DataFrame({"label_end": pd.Series(dates, index=dates).shift(-1)}, index=dates)
+    with pytest.raises(ValueError, match="No test rows"):
+        m.split_rows(data, dates[-1] + pd.Timedelta(days=5), dates[-1] + pd.Timedelta(days=10))  # window past the data
