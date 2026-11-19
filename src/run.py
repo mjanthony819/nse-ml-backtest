@@ -77,8 +77,12 @@ def split_rows(data, start, stop):
     # Purge any target touching the next test period. No future labels at retrain.
     train = data[(data.index < start) & (data.label_end < start)]
     test = data[(data.index >= start) & (data.index < stop)]
-    assert len(train) and len(test)
-    assert train.label_end.max() < test.index.min()
+    if not len(train):
+        raise ValueError(f"No training rows before {start.date()}: move --split later or --start earlier")
+    if not len(test):
+        raise ValueError(f"No test rows in {start.date()}..{stop.date()}: move --end earlier")
+    if not train.label_end.max() < test.index.min():
+        raise ValueError("Training label reaches into the test period: purge failed")
     return train, test
 
 
